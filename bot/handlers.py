@@ -84,9 +84,9 @@ async def back_handler(callback: CallbackQuery):
 async def message(message: Message) -> None:
     text = _("""\n
 \n
-Telegram: @sarvar_py_dev\n
+Telegram: @Abdulloh_1129\n
 📞  +{number}\n
-🤖 Bot Davranbekov Sarvarbek (@sarvar_py_dev) tomonidan tayorlandi.\n""".format(number=998994312269))
+""".format(number=998940918558))
     await message.answer(text=text, parse_mode=ParseMode.HTML)
 
 

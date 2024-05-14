@@ -11,13 +11,13 @@ basket_router = Router()
 
 def basket_msg(user_id):
     basket_of_user = db['basket'][str(user_id)]
-    msg = f"🛒 Savat \n\n"
+    msg = f'🛒 Savat \n\n'
     all_sum = 0
     for i, v in enumerate(basket_of_user.values()):
-        summ = int(v['quantity']) * int(v['price'])
-        msg += f'{i + 1}.{v["product_name"]} \n{v["quantity"]} x {v["price"]} = {str(summ)}so\'m\n\n'
-        all_sum += summ
-    msg += f'Jami: {all_sum}so\'m'
+        summa = int(v['quantity']) * int(v['price'])
+        msg += f'{i + 1}. {v["product_name"]} \n{v["quantity"]} x {v["price"]} = {str(summa)} so\'m\n\n'
+        all_sum += summa
+    msg += f'Jami: {all_sum} so\'m'
     return msg
 
 
@@ -29,18 +29,18 @@ async def to_category(callback: CallbackQuery):
                                   reply_markup=show_categories(callback.from_user.id).as_markup())
 
 
-@basket_router.callback_query(F.data.startwith('savatga'))
+@basket_router.callback_query(F.data.startswith('savatga'))
 async def to_basket(callback: CallbackQuery):
-    basket_ = db['basket']
+    basket_ = db.get('basket',{})
     user = basket_.get(str(callback.from_user.id))
     product_id = callback.data[7:43]
-    product = db['products'][product_id]
+    product = db.get('products')[product_id]
     if user:
         if user.get(product_id):
             user[product_id]['quantity'] += int(callback.data[43:])
         else:
             user[product_id] = {
-                'produckt_name': product['name'],
+                'product_name': product['name'],
                 'quantity': int(callback.data[43:]),
                 'price': product['price']
             }
@@ -73,7 +73,7 @@ async def change_plus(callback: CallbackQuery):
     await callback.message.edit_reply_markup(str(callback.message.message_id), reply_markup=ikb.as_markup())
 
 
-@basket_router.callback_query(F.data.startwith('savat'))
+@basket_router.callback_query(F.data.startswith('savat'))
 async def basket(callback: CallbackQuery):
     msg = basket_msg(callback.from_user.id)
     ikb = InlineKeyboardBuilder()

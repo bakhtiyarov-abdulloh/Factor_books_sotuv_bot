@@ -7,9 +7,11 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, InlineKeyboardButton, ReplyKeyboardRemove, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.utils.i18n import gettext as _
+from aiogram.utils.i18n import lazy_gettext as __
 
 import bot.keyboard as kb
-from bot.config import db
+from config import db
 from bot.keyboard import show_categories
 from bot.filters import ChatTypeFilter, IsAdmin
 from bot.utils import make_url
@@ -32,10 +34,10 @@ class FormState(StatesGroup):
     delete_product = State()
 
 
-@admin_router.message(F.text == "Category qoshish")
+@admin_router.message(F.text == __("Category qoshish"))
 async def add_category(message: Message, state: FSMContext):
     await state.set_state(FormState.category)
-    await message.answer('Category nomini kiriting', reply_markup=ReplyKeyboardRemove())
+    await message.answer(_('Category nomini kiriting'), reply_markup=ReplyKeyboardRemove())
 
 
 @admin_router.message(FormState.category)
@@ -133,6 +135,8 @@ async def add_product(message: Message, state: FSMContext):
 
     save_product['image'] = message.photo[0].file_id
     save_product['thumbnail_url'] = url
+
+
     await state.set_state(FormState.product_price)
     await message.answer('Product narxini kiriting: ')
 

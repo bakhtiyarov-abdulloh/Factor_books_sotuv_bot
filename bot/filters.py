@@ -2,7 +2,7 @@ from aiogram import Bot
 from aiogram.filters import Filter
 from aiogram.types import Message
 
-from bot.config import ADMIN
+from config import ADMIN
 
 
 class ChatTypeFilter(Filter):
